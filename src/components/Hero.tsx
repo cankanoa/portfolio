@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
@@ -9,7 +10,7 @@ export default function Hero() {
       
       {/* Background Image */}
       <div className="absolute inset-0 bg-cover bg-center" style={{
-      backgroundImage: 'url(https://images.unsplash.com/photo-1518279313900-d50fecb29f9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80)',
+      backgroundImage: 'url(/lovable-uploads/c4b4cadc-02a7-4cb7-9499-3f96904cd512.png)',
       opacity: loaded ? 1 : 0,
       transition: 'opacity 1s ease-in-out'
     }} />
