@@ -88,7 +88,7 @@ export default function BlogSection() {
               </div>
             </div>
             
-            {/* Category filter */}
+            {/* Category filter - updated to match focus filter styling */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center text-sm font-medium text-foreground">
                 Category:
@@ -99,7 +99,7 @@ export default function BlogSection() {
                   <Badge
                     key={category}
                     variant={selectedCategories.includes(category) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-secondary/20"
+                    className="cursor-pointer hover:bg-primary/20"
                     onClick={() => toggleCategory(category)}
                   >
                     {category}
@@ -110,7 +110,7 @@ export default function BlogSection() {
           </div>
         </div>
 
-        <div className="divide-y">
+        <div className="divide-y bg-background border border-border rounded-md shadow-sm">
           {filteredBlogs.length > 0 ? (
             filteredBlogs.map(blog => (
               <BlogItem key={blog.id} blog={blog} />

@@ -13,15 +13,15 @@ export default function BlogItem({ blog }: BlogItemProps) {
   };
 
   return (
-    <div className="py-6 border-b last:border-b-0 animate-fade-in">
+    <div className="py-6 px-4 border-b last:border-b-0 animate-fade-in hover:bg-muted/20 transition-colors">
       <div className="space-y-2">
         <h3 className="text-2xl font-serif font-medium">{blog.title}</h3>
         
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="bg-primary/10">
+          <Badge variant="default" className="bg-primary/90">
             {blog.focus}
           </Badge>
-          <Badge variant="secondary">
+          <Badge variant="default" className="bg-primary/70">
             {blog.category}
           </Badge>
         </div>
@@ -39,4 +39,3 @@ export default function BlogItem({ blog }: BlogItemProps) {
     </div>
   );
 }
-
