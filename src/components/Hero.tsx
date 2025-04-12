@@ -1,36 +1,24 @@
-
 import { useEffect, useState } from 'react';
-
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
-  
   useEffect(() => {
     setLoaded(true);
   }, []);
-
-  return (
-    <div className="relative h-screen w-full overflow-hidden">
+  return <div className="relative h-screen w-full overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-10" />
       
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ 
-          backgroundImage: 'url(https://images.unsplash.com/photo-1518279313900-d50fecb29f9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80)', 
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 1s ease-in-out'
-        }}
-      />
+      <div className="absolute inset-0 bg-cover bg-center" style={{
+      backgroundImage: 'url(https://images.unsplash.com/photo-1518279313900-d50fecb29f9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80)',
+      opacity: loaded ? 1 : 0,
+      transition: 'opacity 1s ease-in-out'
+    }} />
       
       {/* Hero Content */}
       <div className="relative h-full flex flex-col items-center justify-center text-center z-20">
         <div className={`transition-all duration-1000 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">
-            Kanoa Lindiwe
-          </h1>
-          <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light">
-            juggler and geographer
-          </p>
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">Juggler and Geographer</h1>
+          <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light">Kanoa Lindiwe</p>
         </div>
       </div>
       
@@ -43,6 +31,5 @@ export default function Hero() {
           <span className="text-white/70 text-sm mt-2">Scroll</span>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
