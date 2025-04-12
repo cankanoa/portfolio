@@ -18,8 +18,8 @@ export default function Hero() {
       {/* Hero Content */}
       <div className="relative h-full flex flex-col items-center justify-center text-center z-20">
         <div className={`transition-all duration-1000 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">Juggler and Geographer</h1>
-          <p className="text-xl md:text-2xl lg:text-3xl text-primary font-light">Kanoa Lindiwe</p>
+          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4">Kanoa Lindiwe</h1>
+          <p className="text-xl md:text-2xl lg:text-3xl text-primary font-light">Juggler and Geographer</p>
         </div>
       </div>
       
