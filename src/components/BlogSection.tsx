@@ -40,8 +40,7 @@ export default function BlogSection() {
     <section className="py-16 md:py-24 px-4 bg-muted/30">
       <div className="container max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4">Blog</h2>
-          <p className="text-muted-foreground">Insights at the intersection of juggling and geography</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-semibold mb-4">Featured Work</h2>
         </div>
 
         <div className="mb-8 space-y-4">
@@ -58,46 +57,58 @@ export default function BlogSection() {
           </div>
           
           {/* Filter section */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="flex items-center text-sm text-muted-foreground">
-              <Filter className="mr-1 h-4 w-4" /> Filters:
-            </span>
-            
-            <div className="flex flex-wrap gap-2">
-              {focusAreas.map(focus => (
-                <Badge
-                  key={focus}
-                  variant={focusFilter === focus ? "default" : "outline"}
-                  className="cursor-pointer hover:bg-primary/20"
-                  onClick={() => setFocusFilter(focusFilter === focus ? null : focus)}
-                >
-                  {focus}
-                </Badge>
-              ))}
+          <div className="space-y-3">
+            {/* Focus filter */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center text-sm font-medium text-foreground">
+                Focus:
+              </span>
+              
+              <div className="flex flex-wrap gap-2">
+                {focusAreas.map(focus => (
+                  <Badge
+                    key={focus}
+                    variant={focusFilter === focus ? "default" : "outline"}
+                    className="cursor-pointer hover:bg-primary/20"
+                    onClick={() => setFocusFilter(focusFilter === focus ? null : focus)}
+                  >
+                    {focus}
+                  </Badge>
+                ))}
+              </div>
             </div>
             
-            <div className="flex flex-wrap gap-2">
-              {categories.map(category => (
-                <Badge
-                  key={category}
-                  variant={categoryFilter === category ? "secondary" : "outline"}
-                  className="cursor-pointer hover:bg-secondary/20"
-                  onClick={() => setCategoryFilter(categoryFilter === category ? null : category)}
-                >
-                  {category}
-                </Badge>
-              ))}
+            {/* Category filter */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center text-sm font-medium text-foreground">
+                Category:
+              </span>
+              
+              <div className="flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <Badge
+                    key={category}
+                    variant={categoryFilter === category ? "secondary" : "outline"}
+                    className="cursor-pointer hover:bg-secondary/20"
+                    onClick={() => setCategoryFilter(categoryFilter === category ? null : category)}
+                  >
+                    {category}
+                  </Badge>
+                ))}
+              </div>
             </div>
             
             {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearFilters}
-                className="ml-auto text-sm flex items-center"
-              >
-                <X className="h-3 w-3 mr-1" /> Clear filters
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="text-sm flex items-center"
+                >
+                  <X className="h-3 w-3 mr-1" /> Clear filters
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -117,3 +128,4 @@ export default function BlogSection() {
     </section>
   );
 }
+

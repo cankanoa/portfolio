@@ -7,8 +7,6 @@ export default function Description() {
     <section className="py-16 md:py-24 px-4">
       <div className="container max-w-3xl mx-auto">
         <div className="text-center space-y-6 animate-fade-in">
-          <h2 className="text-3xl md:text-4xl font-serif font-semibold">About Kanoa</h2>
-          
           <div className="space-y-4 md:text-lg">
             <p>
               Kanoa Lindiwe bridges the unexpected worlds of juggling and geography, finding harmony in their shared principles of space, movement, and pattern recognition.
@@ -56,3 +54,4 @@ export default function Description() {
     </section>
   );
 }
+

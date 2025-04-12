@@ -35,9 +35,8 @@ export default function BlogItem({ blog }: BlogItemProps) {
             </>
           )}
         </div>
-        
-        <p className="text-foreground/80 mt-2">{blog.summary}</p>
       </div>
     </div>
   );
 }
+
