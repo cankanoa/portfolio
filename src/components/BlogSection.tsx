@@ -98,7 +98,7 @@ export default function BlogSection() {
                 {categories.map(category => (
                   <Badge
                     key={category}
-                    variant={selectedCategories.includes(category) ? "secondary" : "outline"}
+                    variant={selectedCategories.includes(category) ? "default" : "outline"}
                     className="cursor-pointer hover:bg-secondary/20"
                     onClick={() => toggleCategory(category)}
                   >
