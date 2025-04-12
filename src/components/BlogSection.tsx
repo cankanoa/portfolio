@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from "react";
-import { blogs, getAllCategories, getAllFocusAreas } from "@/data/blogs";
+import { blogs, getAllCategories } from "@/data/blogs";
 import BlogItem from "./BlogItem";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
@@ -8,18 +8,13 @@ import { Separator } from "@/components/ui/separator";
 
 export default function BlogSection() {
   const [searchText, setSearchText] = useState("");
-  const [selectedFocuses, setSelectedFocuses] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   
-  const focusAreas = getAllFocusAreas();
   const categories = getAllCategories();
   
   const filteredBlogs = useMemo(() => {
     return blogs
       .filter(blog => {
-        // Apply focus filter (show all if none selected)
-        if (selectedFocuses.length > 0 && !selectedFocuses.includes(blog.focus)) return false;
-        
         // Apply category filter (show all if none selected)
         if (selectedCategories.length > 0 && !selectedCategories.includes(blog.category)) return false;
         
@@ -29,15 +24,7 @@ export default function BlogSection() {
         return true;
       })
       .sort((a, b) => new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime());
-  }, [searchText, selectedFocuses, selectedCategories]);
-
-  const toggleFocus = (focus: string) => {
-    setSelectedFocuses(prev => 
-      prev.includes(focus) 
-        ? prev.filter(f => f !== focus) 
-        : [...prev, focus]
-    );
-  };
+  }, [searchText, selectedCategories]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => 
@@ -67,29 +54,9 @@ export default function BlogSection() {
             />
           </div>
           
-          {/* Filter section */}
+          {/* Filter section - only category filter remains */}
           <div className="space-y-3">
-            {/* Focus filter - with Geography/Juggling */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center text-sm font-medium text-foreground">
-                Focus:
-              </span>
-              
-              <div className="flex flex-wrap gap-2">
-                {focusAreas.map(focus => (
-                  <Badge
-                    key={focus}
-                    variant={selectedFocuses.includes(focus) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary/20"
-                    onClick={() => toggleFocus(focus)}
-                  >
-                    {focus}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            {/* Category filter - with Research/Tutorial/etc */}
+            {/* Category filter */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center text-sm font-medium text-foreground">
                 Category:

@@ -29,9 +29,6 @@ export default function BlogItem({ blog }: BlogItemProps) {
         <h3 className="text-2xl font-serif font-medium">{blog.title}</h3>
         
         <div className="flex flex-wrap gap-2">
-          <Badge variant="default" className="bg-primary/90">
-            {blog.focus}
-          </Badge>
           <Badge variant="default" className="bg-primary/70">
             {blog.category}
           </Badge>
