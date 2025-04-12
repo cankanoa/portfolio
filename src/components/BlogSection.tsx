@@ -68,27 +68,7 @@ export default function BlogSection() {
           
           {/* Filter section */}
           <div className="space-y-3">
-            {/* Focus filter */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center text-sm font-medium text-foreground">
-                Focus:
-              </span>
-              
-              <div className="flex flex-wrap gap-2">
-                {focusAreas.map(focus => (
-                  <Badge
-                    key={focus}
-                    variant={selectedFocuses.includes(focus) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary/20"
-                    onClick={() => toggleFocus(focus)}
-                  >
-                    {focus}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            {/* Category filter - updated to match focus filter styling */}
+            {/* Category filter - now first */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center text-sm font-medium text-foreground">
                 Category:
@@ -103,6 +83,26 @@ export default function BlogSection() {
                     onClick={() => toggleCategory(category)}
                   >
                     {category}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            
+            {/* Focus filter - now second */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center text-sm font-medium text-foreground">
+                Focus:
+              </span>
+              
+              <div className="flex flex-wrap gap-2">
+                {focusAreas.map(focus => (
+                  <Badge
+                    key={focus}
+                    variant={selectedFocuses.includes(focus) ? "default" : "outline"}
+                    className="cursor-pointer hover:bg-primary/20"
+                    onClick={() => toggleFocus(focus)}
+                  >
+                    {focus}
                   </Badge>
                 ))}
               </div>
