@@ -1,12 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from "react";
+import Hero from "@/components/Hero";
+import Description from "@/components/Description";
+import BlogSection from "@/components/BlogSection";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Index = () => {
+  // Set up light and dark mode to match system preference by default
+  useEffect(() => {
+    // This will be handled by our useTheme hook
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <ThemeToggle />
+      <Hero />
+      <Description />
+      <BlogSection />
+      
+      <footer className="py-8 text-center text-sm text-muted-foreground">
+        <div className="container">
+          <p>&copy; {new Date().getFullYear()} Kanoa Lindiwe. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
