@@ -2,14 +2,13 @@
 import { useState, useMemo } from "react";
 import { blogs, getAllCategories, getAllFocusAreas } from "@/data/blogs";
 import BlogItem from "./BlogItem";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 export default function BlogSection() {
   const [searchText, setSearchText] = useState("");
-  const [focusFilter, setFocusFilter] = useState<string | null>(null);
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [selectedFocuses, setSelectedFocuses] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   
   const focusAreas = getAllFocusAreas();
   const categories = getAllCategories();
@@ -17,24 +16,35 @@ export default function BlogSection() {
   const filteredBlogs = useMemo(() => {
     return blogs
       .filter(blog => {
-        // Apply focus filter
-        if (focusFilter && blog.focus !== focusFilter) return false;
-        // Apply category filter
-        if (categoryFilter && blog.category !== categoryFilter) return false;
+        // Apply focus filter (show all if none selected)
+        if (selectedFocuses.length > 0 && !selectedFocuses.includes(blog.focus)) return false;
+        
+        // Apply category filter (show all if none selected)
+        if (selectedCategories.length > 0 && !selectedCategories.includes(blog.category)) return false;
+        
         // Apply search text filter
         if (searchText && !blog.title.toLowerCase().includes(searchText.toLowerCase())) return false;
+        
         return true;
       })
       .sort((a, b) => new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime());
-  }, [searchText, focusFilter, categoryFilter]);
+  }, [searchText, selectedFocuses, selectedCategories]);
 
-  const clearFilters = () => {
-    setFocusFilter(null);
-    setCategoryFilter(null);
-    setSearchText("");
+  const toggleFocus = (focus: string) => {
+    setSelectedFocuses(prev => 
+      prev.includes(focus) 
+        ? prev.filter(f => f !== focus) 
+        : [...prev, focus]
+    );
   };
 
-  const hasActiveFilters = focusFilter !== null || categoryFilter !== null || searchText !== "";
+  const toggleCategory = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category) 
+        : [...prev, category]
+    );
+  };
 
   return (
     <section className="py-16 md:py-24 px-4 bg-muted/30">
@@ -68,9 +78,9 @@ export default function BlogSection() {
                 {focusAreas.map(focus => (
                   <Badge
                     key={focus}
-                    variant={focusFilter === focus ? "default" : "outline"}
+                    variant={selectedFocuses.includes(focus) ? "default" : "outline"}
                     className="cursor-pointer hover:bg-primary/20"
-                    onClick={() => setFocusFilter(focusFilter === focus ? null : focus)}
+                    onClick={() => toggleFocus(focus)}
                   >
                     {focus}
                   </Badge>
@@ -88,28 +98,15 @@ export default function BlogSection() {
                 {categories.map(category => (
                   <Badge
                     key={category}
-                    variant={categoryFilter === category ? "secondary" : "outline"}
+                    variant={selectedCategories.includes(category) ? "secondary" : "outline"}
                     className="cursor-pointer hover:bg-secondary/20"
-                    onClick={() => setCategoryFilter(categoryFilter === category ? null : category)}
+                    onClick={() => toggleCategory(category)}
                   >
                     {category}
                   </Badge>
                 ))}
               </div>
             </div>
-            
-            {hasActiveFilters && (
-              <div className="flex justify-end">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="text-sm flex items-center"
-                >
-                  <X className="h-3 w-3 mr-1" /> Clear filters
-                </Button>
-              </div>
-            )}
           </div>
         </div>
 
@@ -128,4 +125,3 @@ export default function BlogSection() {
     </section>
   );
 }
-
