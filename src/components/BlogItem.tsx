@@ -13,8 +13,19 @@ export default function BlogItem({ blog }: BlogItemProps) {
   };
 
   return (
-    <div className="py-6 px-4 border-b last:border-b-0 animate-fade-in hover:bg-muted/20 transition-colors">
-      <div className="space-y-2">
+    <div className="py-6 px-4 animate-fade-in">
+      <div className="space-y-3">
+        {/* Date moved to the top */}
+        <div className="text-sm text-muted-foreground">
+          {formatDate(blog.mainDate)}
+          {blog.optionalEndDate && (
+            <>
+              <span className="mx-2">—</span>
+              {formatDate(blog.optionalEndDate)}
+            </>
+          )}
+        </div>
+        
         <h3 className="text-2xl font-serif font-medium">{blog.title}</h3>
         
         <div className="flex flex-wrap gap-2">
@@ -24,16 +35,6 @@ export default function BlogItem({ blog }: BlogItemProps) {
           <Badge variant="default" className="bg-primary/70">
             {blog.category}
           </Badge>
-        </div>
-        
-        <div className="text-sm text-muted-foreground">
-          {formatDate(blog.mainDate)}
-          {blog.optionalEndDate && (
-            <>
-              <span className="mx-2">—</span>
-              {formatDate(blog.optionalEndDate)}
-            </>
-          )}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { blogs, getAllCategories, getAllFocusAreas } from "@/data/blogs";
 import BlogItem from "./BlogItem";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export default function BlogSection() {
   const [searchText, setSearchText] = useState("");
@@ -110,10 +111,13 @@ export default function BlogSection() {
           </div>
         </div>
 
-        <div className="divide-y bg-background border border-border rounded-md shadow-sm">
+        <div className="divide-y bg-transparent">
           {filteredBlogs.length > 0 ? (
-            filteredBlogs.map(blog => (
-              <BlogItem key={blog.id} blog={blog} />
+            filteredBlogs.map((blog, index) => (
+              <div key={blog.id}>
+                <BlogItem blog={blog} />
+                {index < filteredBlogs.length - 1 && <Separator className="my-4" />}
+              </div>
             ))
           ) : (
             <div className="py-16 text-center">
