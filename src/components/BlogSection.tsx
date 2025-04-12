@@ -68,10 +68,10 @@ export default function BlogSection() {
           
           {/* Filter section */}
           <div className="space-y-3">
-            {/* Category filter - now first */}
+            {/* Focus filter - now first (with Geography/Juggling) */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center text-sm font-medium text-foreground">
-                Category:
+                Focus:
               </span>
               
               <div className="flex flex-wrap gap-2">
@@ -88,10 +88,10 @@ export default function BlogSection() {
               </div>
             </div>
             
-            {/* Focus filter - now second */}
+            {/* Category filter - now second (with Research/Tutorial/etc) */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center text-sm font-medium text-foreground">
-                Focus:
+                Category:
               </span>
               
               <div className="flex flex-wrap gap-2">
