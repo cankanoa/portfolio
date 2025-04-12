@@ -22,15 +22,5 @@ export default function Hero() {
           <p className="text-xl md:text-2xl lg:text-3xl text-primary transition-colors duration-300 font-light">Kanoa Lindiwe</p>
         </div>
       </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex flex-col items-center">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center p-1">
-            <div className="w-1.5 h-3 bg-white/80 rounded-full animate-bounce" />
-          </div>
-          <span className="text-white/70 text-sm mt-2">Scroll</span>
-        </div>
-      </div>
     </div>;
 }
