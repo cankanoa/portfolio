@@ -76,26 +76,6 @@ export default function BlogSection() {
               </span>
               
               <div className="flex flex-wrap gap-2">
-                {categories.map(category => (
-                  <Badge
-                    key={category}
-                    variant={selectedCategories.includes(category) ? "default" : "outline"}
-                    className="cursor-pointer hover:bg-primary/20"
-                    onClick={() => toggleCategory(category)}
-                  >
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            
-            {/* Category filter - now second (with Research/Tutorial/etc) */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center text-sm font-medium text-foreground">
-                Category:
-              </span>
-              
-              <div className="flex flex-wrap gap-2">
                 {focusAreas.map(focus => (
                   <Badge
                     key={focus}
@@ -108,10 +88,30 @@ export default function BlogSection() {
                 ))}
               </div>
             </div>
+            
+            {/* Category filter - now second (with Research/Tutorial/etc) */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="flex items-center text-sm font-medium text-foreground">
+                Category:
+              </span>
+              
+              <div className="flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <Badge
+                    key={category}
+                    variant={selectedCategories.includes(category) ? "default" : "outline"}
+                    className="cursor-pointer hover:bg-primary/20"
+                    onClick={() => toggleCategory(category)}
+                  >
+                    {category}
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="divide-y bg-transparent">
+        <div className="bg-transparent">
           {filteredBlogs.length > 0 ? (
             filteredBlogs.map((blog, index) => (
               <div key={blog.id}>
