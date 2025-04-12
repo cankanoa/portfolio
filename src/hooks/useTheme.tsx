@@ -4,45 +4,28 @@ import { useEffect, useState } from 'react';
 type Theme = 'dark' | 'light' | 'system';
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>('system');
+  const [theme] = useState<Theme>('system');
   
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') as Theme | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    }
-  }, []);
-
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     
     function applyTheme() {
       const root = window.document.documentElement;
-      
-      if (theme === 'system') {
-        const systemTheme = media.matches ? 'dark' : 'light';
-        root.classList.toggle('dark', systemTheme === 'dark');
-      } else {
-        root.classList.toggle('dark', theme === 'dark');
-      }
+      const systemTheme = media.matches ? 'dark' : 'light';
+      root.classList.toggle('dark', systemTheme === 'dark');
     }
     
     applyTheme();
     
     const listener = () => {
-      if (theme === 'system') {
-        applyTheme();
-      }
+      applyTheme();
     };
     
     media.addEventListener('change', listener);
     return () => media.removeEventListener('change', listener);
-  }, [theme]);
+  }, []);
 
-  function setThemeAndStore(newTheme: Theme) {
-    localStorage.setItem('theme', newTheme);
-    setTheme(newTheme);
-  }
-
-  return { theme, setTheme: setThemeAndStore };
+  // Return a dummy setTheme function to maintain API compatibility
+  // but it won't actually change the theme since we're using system only
+  return { theme, setTheme: () => {} };
 }
