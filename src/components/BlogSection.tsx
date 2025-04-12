@@ -113,12 +113,16 @@ export default function BlogSection() {
 
         <div className="bg-transparent">
           {filteredBlogs.length > 0 ? (
-            filteredBlogs.map((blog, index) => (
-              <div key={blog.id}>
-                <BlogItem blog={blog} />
-                {index < filteredBlogs.length - 1 && <Separator className="my-4" />}
-              </div>
-            ))
+            <>
+              {filteredBlogs.map((blog, index) => (
+                <React.Fragment key={blog.id}>
+                  <BlogItem blog={blog} />
+                  {index < filteredBlogs.length - 1 && (
+                    <Separator className="my-4" />
+                  )}
+                </React.Fragment>
+              ))}
+            </>
           ) : (
             <div className="py-16 text-center">
               <p className="text-muted-foreground">No blog posts found. Try adjusting your filters.</p>
