@@ -46,11 +46,11 @@ export default function BlogPost() {
         <h1 className="text-4xl font-serif font-bold mb-8">Blog Post Not Found</h1>
         <p className="mb-8">The blog post you're looking for doesn't exist or has been removed.</p>
         <Link 
-          to="/blog" 
+          to="/" 
           className="flex items-center justify-center gap-2 text-primary hover:underline"
         >
           <ArrowLeft size={16} />
-          Back to all blog posts
+          Back to home
         </Link>
       </div>
     );
@@ -65,11 +65,11 @@ export default function BlogPost() {
       <div className="container max-w-3xl px-4 py-16 mx-auto">
         <div className="mb-8">
           <Link 
-            to="/blog" 
+            to="/" 
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft size={16} />
-            Back to all blog posts
+            Back to home
           </Link>
           
           <div className="text-sm text-muted-foreground mb-4">
