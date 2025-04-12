@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Mail, Github, Instagram, Linkedin } from "lucide-react";
 
 export default function Description() {
   return (
@@ -26,13 +26,30 @@ export default function Description() {
             </p>
           </div>
           
-          <div className="pt-6">
+          <div className="pt-6 flex flex-col items-center gap-6">
             <Button asChild size="lg" className="group">
               <a href="mailto:cankanoa@gmail.com">
                 Get In Touch
                 <Mail className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
+
+            <div className="flex items-center justify-center gap-6">
+              <a href="https://instagram.com/can.kanoa" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
+                <Instagram size={24} aria-label="Instagram" />
+              </a>
+              <a href="https://github.com/cankanoa" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
+                <Github size={24} aria-label="GitHub" />
+              </a>
+              <a href="https://www.linkedin.com/in/cankanoa" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
+                <Linkedin size={24} aria-label="LinkedIn" />
+              </a>
+              <a href="https://orcid.org/0009-0009-5520-1911" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-current" aria-label="ORCID">
+                  <span className="font-bold text-xs">iD</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
