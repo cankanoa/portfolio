@@ -1,23 +1,18 @@
 
 import React from "react";
-import { Blog } from "@/data/blogs";
+import { BlogMeta } from "@/utils/mdxUtils";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
 interface BlogItemProps {
-  blog: Blog;
+  blog: BlogMeta;
 }
 
 export default function BlogItem({ blog }: BlogItemProps) {
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), "MMMM d, yyyy");
   };
-  
-  const slug = blog.title
-    .toLowerCase()
-    .replace(/[^\w\s]/g, '')  // Remove punctuation
-    .replace(/\s+/g, '-');    // Replace spaces with hyphens
 
   return (
     <div className="py-6 px-4 animate-fade-in">
@@ -34,7 +29,7 @@ export default function BlogItem({ blog }: BlogItemProps) {
         </div>
         
         <h3 className="text-2xl font-serif font-medium">
-          <Link to={`/blog/${slug}`} className="hover:text-primary transition-colors">
+          <Link to={`/blog/${blog.slug}`} className="hover:text-primary transition-colors">
             {blog.title}
           </Link>
         </h3>

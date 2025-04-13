@@ -1,13 +1,18 @@
+
 import React, { useState, useMemo } from "react";
-import { blogs, getAllCategories } from "@/data/blogs";
+import { getAllBlogMeta, getAllCategories } from "@/utils/mdxUtils";
 import BlogItem from "./BlogItem";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+
 export default function BlogSection() {
   const [searchText, setSearchText] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  
+  const blogs = getAllBlogMeta();
   const categories = getAllCategories();
+  
   const filteredBlogs = useMemo(() => {
     return blogs.filter(blog => {
       // Apply category filter (show all if none selected)
@@ -17,10 +22,12 @@ export default function BlogSection() {
       if (searchText && !blog.title.toLowerCase().includes(searchText.toLowerCase())) return false;
       return true;
     }).sort((a, b) => new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime());
-  }, [searchText, selectedCategories]);
+  }, [searchText, selectedCategories, blogs]);
+  
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]);
   };
+  
   return <section className="py-16 md:py-24 px-4 bg-muted/30">
       <div className="container max-w-4xl mx-auto">
         <div className="text-center mb-8">
