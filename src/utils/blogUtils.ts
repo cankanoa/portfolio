@@ -1,6 +1,4 @@
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
 
 export interface BlogMeta {
@@ -14,38 +12,36 @@ export interface BlogMeta {
   content: string;
 }
 
-// Cache the blog data to avoid reading from disk on every request
+// Use Vite's import.meta.glob to import all MDX files statically
+const blogFiles = import.meta.glob('/src/content/blog/*.mdx', { as: 'raw', eager: true });
+
+// Cache the blog data to avoid processing on every request
 let blogCache: BlogMeta[] | null = null;
 
 export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
   if (blogCache) return blogCache;
 
   try {
-    const blogDir = path.join(process.cwd(), 'src/content/blog');
-    const filenames = await fs.readdir(blogDir);
+    const blogs: BlogMeta[] = [];
     
-    const blogs = await Promise.all(
-      filenames
-        .filter(filename => filename.endsWith('.mdx'))
-        .map(async (filename) => {
-          const filePath = path.join(blogDir, filename);
-          const fileContent = await fs.readFile(filePath, 'utf8');
-          
-          const { data, content } = matter(fileContent);
-          const slug = filename.replace(/\.mdx$/, '');
-          
-          return {
-            id: slug,
-            slug,
-            title: data.title,
-            category: data.category,
-            mainDate: data.mainDate,
-            optionalEndDate: data.optionalEndDate,
-            summary: data.summary,
-            content
-          } as BlogMeta;
-        })
-    );
+    // Process each blog file
+    for (const path in blogFiles) {
+      const content = blogFiles[path];
+      const { data, content: mdxContent } = matter(content);
+      const filename = path.split('/').pop() || '';
+      const slug = filename.replace(/\.mdx$/, '');
+      
+      blogs.push({
+        id: slug,
+        slug,
+        title: data.title,
+        category: data.category,
+        mainDate: data.mainDate,
+        optionalEndDate: data.optionalEndDate,
+        summary: data.summary,
+        content: mdxContent
+      });
+    }
     
     // Sort blogs by date (newest first)
     blogCache = blogs.sort((a, b) => 
@@ -54,7 +50,7 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
     
     return blogCache;
   } catch (error) {
-    console.error("Error reading blog files:", error);
+    console.error("Error processing blog files:", error);
     return [];
   }
 };
