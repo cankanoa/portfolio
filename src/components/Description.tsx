@@ -9,7 +9,7 @@ export default function Description() {
         <div className="text-center space-y-6 animate-fade-in">
           <div className="space-y-4 md:text-lg">
             <p>
-              Kanoa Lindiwe bridges the unexpected worlds of juggling and geography, finding harmony in their shared principles of space, movement, and pattern recognition.
+              testKanoa Lindiwe bridges the unexpected worlds of juggling and geography, finding harmony in their shared principles of space, movement, and pattern recognition.
             </p>
             
             <p>
