@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { getAllBlogMeta } from "@/utils/mdxUtils";
+import { getAllBlogMeta } from "@/utils/blogUtils";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
