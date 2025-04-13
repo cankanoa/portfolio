@@ -1,101 +1,105 @@
 
-import React from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { getBlogMetaBySlug } from "@/utils/mdxUtils";
-import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-
-interface BlogPostContentProps {
-  slug: string;
-}
-
-// This component would normally render MDX content
-// For this demo, we'll use dummy content
-const BlogPostContent: React.FC<BlogPostContentProps> = ({ slug }) => {
-  // In a real app, this would dynamically import and render the MDX
-  return (
-    <div className="prose prose-stone dark:prose-invert max-w-none">
-      <p>This is the content for blog post with slug: {slug}</p>
-      <p>In a real app, this would render the actual MDX content from the file.</p>
-      <h2>Section Title</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <h3>Subsection</h3>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <blockquote>
-        <p>This is an important quote from the article that highlights a key concept.</p>
-      </blockquote>
-      <p>The conclusion summarizes the main points and provides insights for further exploration.</p>
-    </div>
-  );
-};
+import { getBlogBySlug, BlogMeta } from "@/utils/blogUtils";
+import { format } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import MDXContent from "@/components/MDXContent";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  
-  if (!slug) {
-    return <div>Error: No slug provided</div>;
-  }
-  
-  const blogMeta = getBlogMetaBySlug(slug);
-  
-  if (!blogMeta) {
-    return (
-      <div className="container max-w-4xl px-4 py-16 mx-auto text-center">
-        <h1 className="text-4xl font-serif font-bold mb-8">Blog Post Not Found</h1>
-        <p className="mb-8">The blog post you're looking for doesn't exist or has been removed.</p>
-        <Link 
-          to="/" 
-          className="flex items-center justify-center gap-2 text-primary hover:underline"
-        >
-          <ArrowLeft size={16} />
-          Back to home
-        </Link>
-      </div>
-    );
-  }
-  
+  const [blog, setBlog] = useState<BlogMeta | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      if (!slug) {
+        setError("Blog post not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const blogData = await getBlogBySlug(slug);
+        if (blogData) {
+          setBlog(blogData);
+        } else {
+          setError("Blog post not found");
+        }
+      } catch (err) {
+        setError("Failed to load blog post");
+        console.error("Error loading blog post:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [slug]);
+
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), "MMMM d, yyyy");
   };
-  
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-3xl px-4 py-16 mx-auto">
-        <div className="mb-8">
-          <Link 
-            to="/" 
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft size={16} />
-            Back to home
+
+  if (loading) {
+    return (
+      <div className="container max-w-4xl mx-auto py-16 px-4">
+        <p className="text-center">Loading blog post...</p>
+      </div>
+    );
+  }
+
+  if (error || !blog) {
+    return (
+      <div className="container max-w-4xl mx-auto py-16 px-4">
+        <div className="text-center">
+          <h1 className="text-3xl font-serif font-semibold mb-4">{error}</h1>
+          <Link to="/" className="text-primary hover:underline flex items-center justify-center gap-2">
+            <ArrowLeft size={20} />
+            Back to Home
           </Link>
-          
-          <div className="text-sm text-muted-foreground mb-4">
-            {formatDate(blogMeta.mainDate)}
-            {blogMeta.optionalEndDate && (
-              <>
-                <span className="mx-2">—</span>
-                {formatDate(blogMeta.optionalEndDate)}
-              </>
-            )}
-          </div>
-          
-          <h1 className="text-4xl font-serif font-bold mb-4">{blogMeta.title}</h1>
-          
-          <div className="mb-8">
-            <Badge variant="default" className="bg-primary/70">
-              {blogMeta.category}
-            </Badge>
-          </div>
-          
-          <p className="text-lg text-muted-foreground mb-12">{blogMeta.summary}</p>
         </div>
-        
-        <div className="border-t border-border pt-8">
-          <BlogPostContent slug={slug} />
-        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen py-16 px-4 bg-background">
+      <div className="container max-w-4xl mx-auto">
+        <Link to="/" className="text-primary hover:underline flex items-center gap-2 mb-8">
+          <ArrowLeft size={20} />
+          Back to Home
+        </Link>
+
+        <header className="mb-12">
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-serif font-semibold">{blog.title}</h1>
+            
+            <div className="flex flex-wrap items-center gap-4">
+              <Badge variant="default" className="bg-primary/70">
+                {blog.category}
+              </Badge>
+              
+              <span className="text-sm text-muted-foreground">
+                {formatDate(blog.mainDate)}
+                {blog.optionalEndDate && (
+                  <>
+                    <span className="mx-2">—</span>
+                    {formatDate(blog.optionalEndDate)}
+                  </>
+                )}
+              </span>
+            </div>
+            
+            <p className="text-xl text-muted-foreground">{blog.summary}</p>
+          </div>
+        </header>
+
+        <article className="prose prose-invert prose-lg max-w-none">
+          <MDXContent content={blog.content} />
+        </article>
       </div>
     </div>
   );

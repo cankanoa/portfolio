@@ -1,6 +1,6 @@
 
-import React, { useState, useMemo } from "react";
-import { getAllBlogMeta, getAllCategories } from "@/utils/mdxUtils";
+import React, { useState, useEffect } from "react";
+import { getAllBlogMeta, getAllCategories, BlogMeta } from "@/utils/blogUtils";
 import BlogItem from "./BlogItem";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
@@ -9,11 +9,28 @@ import { Separator } from "@/components/ui/separator";
 export default function BlogSection() {
   const [searchText, setSearchText] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [blogs, setBlogs] = useState<BlogMeta[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  const blogs = getAllBlogMeta();
-  const categories = getAllCategories();
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        const blogData = await getAllBlogMeta();
+        const categoryData = await getAllCategories();
+        setBlogs(blogData);
+        setCategories(categoryData);
+      } catch (error) {
+        console.error("Error fetching blog data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogData();
+  }, []);
   
-  const filteredBlogs = useMemo(() => {
+  const filteredBlogs = React.useMemo(() => {
     return blogs.filter(blog => {
       // Apply category filter (show all if none selected)
       if (selectedCategories.length > 0 && !selectedCategories.includes(blog.category)) return false;
@@ -21,12 +38,20 @@ export default function BlogSection() {
       // Apply search text filter
       if (searchText && !blog.title.toLowerCase().includes(searchText.toLowerCase())) return false;
       return true;
-    }).sort((a, b) => new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime());
+    });
   }, [searchText, selectedCategories, blogs]);
   
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]);
   };
+  
+  if (loading) {
+    return <section className="py-16 md:py-24 px-4 bg-muted/30">
+      <div className="container max-w-4xl mx-auto">
+        <p className="text-center">Loading blog posts...</p>
+      </div>
+    </section>;
+  }
   
   return <section className="py-16 md:py-24 px-4 bg-muted/30">
       <div className="container max-w-4xl mx-auto">

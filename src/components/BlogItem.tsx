@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BlogMeta } from "@/utils/mdxUtils";
+import { BlogMeta } from "@/utils/blogUtils";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
@@ -39,6 +39,8 @@ export default function BlogItem({ blog }: BlogItemProps) {
             {blog.category}
           </Badge>
         </div>
+
+        <p className="text-muted-foreground">{blog.summary}</p>
       </div>
     </div>
   );
