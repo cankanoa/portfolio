@@ -12,16 +12,23 @@ export default function BlogSection() {
   const [blogs, setBlogs] = useState<BlogMeta[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
+        console.log("Fetching blog data...");
         const blogData = await getAllBlogMeta();
+        console.log("Blog data received:", blogData);
+        
         const categoryData = await getAllCategories();
+        console.log("Categories received:", categoryData);
+        
         setBlogs(blogData);
         setCategories(categoryData);
       } catch (error) {
         console.error("Error fetching blog data:", error);
+        setError("Failed to load blog content");
       } finally {
         setLoading(false);
       }
@@ -49,6 +56,14 @@ export default function BlogSection() {
     return <section className="py-16 md:py-24 px-4 bg-muted/30">
       <div className="container max-w-4xl mx-auto">
         <p className="text-center">Loading blog posts...</p>
+      </div>
+    </section>;
+  }
+
+  if (error) {
+    return <section className="py-16 md:py-24 px-4 bg-muted/30">
+      <div className="container max-w-4xl mx-auto">
+        <p className="text-center text-red-500">{error}</p>
       </div>
     </section>;
   }

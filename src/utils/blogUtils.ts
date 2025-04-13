@@ -18,7 +18,7 @@ const blogFiles = import.meta.glob('/src/content/blog/*.mdx', { as: 'raw', eager
 // Cache the blog data to avoid processing on every request
 let blogCache: BlogMeta[] | null = null;
 
-export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
+export const getAllBlogMeta = async (): Promise<BlogMeta[]> {
   if (blogCache) return blogCache;
 
   try {
@@ -27,20 +27,26 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
     // Process each blog file
     for (const path in blogFiles) {
       const content = blogFiles[path];
-      const { data, content: mdxContent } = matter(content);
-      const filename = path.split('/').pop() || '';
-      const slug = filename.replace(/\.mdx$/, '');
       
-      blogs.push({
-        id: slug,
-        slug,
-        title: data.title,
-        category: data.category,
-        mainDate: data.mainDate,
-        optionalEndDate: data.optionalEndDate,
-        summary: data.summary,
-        content: mdxContent
-      });
+      try {
+        // Use gray-matter without relying on Buffer
+        const { data, content: mdxContent } = matter(content);
+        const filename = path.split('/').pop() || '';
+        const slug = filename.replace(/\.mdx$/, '');
+        
+        blogs.push({
+          id: slug,
+          slug,
+          title: data.title,
+          category: data.category,
+          mainDate: data.mainDate,
+          optionalEndDate: data.optionalEndDate,
+          summary: data.summary,
+          content: mdxContent
+        });
+      } catch (e) {
+        console.error(`Error processing MDX file ${path}:`, e);
+      }
     }
     
     // Sort blogs by date (newest first)
