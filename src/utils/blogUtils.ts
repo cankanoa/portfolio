@@ -29,7 +29,7 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
       const content = blogFiles[path];
       
       try {
-        // Use gray-matter without relying on Buffer
+        // Parse frontmatter from content string directly
         const { data, content: mdxContent } = matter(content);
         const filename = path.split('/').pop() || '';
         const slug = filename.replace(/\.mdx$/, '');
@@ -50,10 +50,14 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
     }
     
     // Sort blogs by date (newest first)
-    blogCache = blogs.sort((a, b) => {
+    const sortedBlogs = blogs.sort((a, b) => {
       return new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime();
     });
     
+    // Log what we found for debugging purposes
+    console.log(`Found ${sortedBlogs.length} blog posts:`, sortedBlogs.map(b => b.slug));
+    
+    blogCache = sortedBlogs;
     return blogCache;
   } catch (error) {
     console.error("Error processing blog files:", error);
