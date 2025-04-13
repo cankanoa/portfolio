@@ -18,7 +18,7 @@ const blogFiles = import.meta.glob('/src/content/blog/*.mdx', { as: 'raw', eager
 // Cache the blog data to avoid processing on every request
 let blogCache: BlogMeta[] | null = null;
 
-export const getAllBlogMeta = async (): Promise<BlogMeta[]> {
+export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
   if (blogCache) return blogCache;
 
   try {
@@ -50,9 +50,9 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> {
     }
     
     // Sort blogs by date (newest first)
-    blogCache = blogs.sort((a, b) => 
-      new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime()
-    );
+    blogCache = blogs.sort((a, b) => {
+      return new Date(b.mainDate).getTime() - new Date(a.mainDate).getTime();
+    });
     
     return blogCache;
   } catch (error) {
