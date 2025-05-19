@@ -1,6 +1,4 @@
 
-import matter from 'gray-matter';
-
 export interface BlogMeta {
   id: string;
   slug: string;
@@ -15,17 +13,40 @@ export interface BlogMeta {
 // Use Vite's import.meta.glob to import all MDX files statically
 const blogFiles = import.meta.glob('/src/content/blog/*.mdx', { as: 'raw', eager: true });
 
-// Helper function similar to the one you provided to parse frontmatter
+// Custom frontmatter parser that doesn't rely on Node's Buffer
 function parseFrontmatter(fileContent: string) {
-  const { data, content } = matter(fileContent);
+  // Extract the frontmatter section between --- markers
+  const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
+  const match = frontmatterRegex.exec(fileContent);
+  
+  if (!match || !match[1]) {
+    throw new Error('No frontmatter found in MDX file');
+  }
+  
+  const frontMatterBlock = match[1];
+  const content = fileContent.replace(frontmatterRegex, '').trim();
+  const frontMatterLines = frontMatterBlock.trim().split('\n');
+  const data: Record<string, any> = {};
+
+  // Parse each line in the frontmatter
+  frontMatterLines.forEach((line) => {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex !== -1) {
+      const key = line.slice(0, colonIndex).trim();
+      let value = line.slice(colonIndex + 1).trim();
+      // Remove surrounding quotes if they exist
+      value = value.replace(/^['"](.*)['"]$/, '$1');
+      data[key] = value;
+    }
+  });
   
   return {
     metadata: {
-      title: data.title,
-      category: data.category,
-      mainDate: data.mainDate,
+      title: data.title || '',
+      category: data.category || '',
+      mainDate: data.mainDate || '',
       optionalEndDate: data.optionalEndDate,
-      summary: data.summary
+      summary: data.summary || ''
     },
     content
   };
@@ -45,7 +66,8 @@ export const getAllBlogMeta = async (): Promise<BlogMeta[]> => {
       const content = blogFiles[path];
       
       try {
-        // Parse frontmatter using our helper function
+        console.log(`Processing file: ${path}`);
+        // Parse frontmatter using our custom function
         const { metadata, content: mdxContent } = parseFrontmatter(content);
         const filename = path.split('/').pop() || '';
         const slug = filename.replace(/\.mdx$/, '');
@@ -92,7 +114,7 @@ export const getAllCategories = async (): Promise<string[]> => {
   return Array.from(categoriesSet);
 };
 
-// Similar to your formatDate function
+// Format date for display
 export function formatDate(date: string, includeRelative = false) {
   let currentDate = new Date();
   if (!date.includes('T')) {
